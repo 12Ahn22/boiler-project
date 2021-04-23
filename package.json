@@ -1,11 +1,18 @@
 {
-  "name": "0_boilerproject",
-  "version": "1.0.0",
-  "description": "boiler-project",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "ayo",
-  "license": "ISC"
+	"name": "0_boilerproject",
+	"version": "1.0.0",
+	"description": "boiler-project",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon index.js"
+	},
+	"author": "ayo",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.17.1",
+		"mongoose": "^5.12.5",
+		"nodemon": "^2.0.7"
+	}
 }
