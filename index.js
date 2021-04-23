@@ -4,6 +4,7 @@ import mongoose from 'mongoose'; // mongoose를 이용해 mongoDB와 app 연결
 import { User } from './models/User.js'; // 만든 User 모델 가져오기
 import { config } from './config/key.js'; //
 import cookieParser from 'cookie-parser';
+import { auth } from './middleware/auth.js';
 
 const app = express();
 const port = 5000;
@@ -86,8 +87,36 @@ app.post('/api/users/login', (req, res) => {
 	});
 });
 
-app.post('');
+// Auth 라우터
+// 미들웨어 auth를 사용한다. 콜백을 시작하기 전에 중간에 실행할 함수 auth
+app.get('/api/users/auth', auth, (req, res) => {
+	// 여기까지 미들웨어를 통과했다 = auth가 true이다
+	res.status(200).json({
+		_id: req.user._id,
+		isAdmin: req.user.role === 0 ? false : true,
+		isAuth: true,
+		email: req.user.email,
+		name: req.user.name,
+		lastname: req.user.lastname,
+		role: req.user.role,
+		image: req.user.image,
+	});
+});
 
+// 로그아웃 라우트
+// 로그 아웃 하는 유저의 DB를 찾아서 토큰을 지워준다
+// 로그인 된 상태라서 auth 미들웨어를 사용
+app.get('/api/users/logout', auth, (req, res) => {
+	// req.user는 미들웨어어서 넣어줬음 . _id로 유저를 찾고 , {삭제}
+	User.findOneAndUpdate({ _id: req.user._id }, { token: ' ' }, (err, user) => {
+		if (err) return res.json({ success: false, err });
+		return res.status(200).send({
+			success: true,
+		});
+	});
+});
+
+// 서버가 열려있는 상태인 경우
 app.listen(port, () => {
 	console.log(`Example app listening at http://localhost:${port}`);
 });
