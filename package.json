@@ -1,0 +1,11 @@
+{
+  "name": "0_boilerproject",
+  "version": "1.0.0",
+  "description": "boiler-project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ayo",
+  "license": "ISC"
+}
