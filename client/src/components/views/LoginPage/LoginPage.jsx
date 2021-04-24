@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../../_actions/user_action';
+import { withRouter } from 'react-router-dom';
 
 const LoginPage = (props) => {
 	// 리덕스 dispatch
@@ -30,7 +31,7 @@ const LoginPage = (props) => {
 		// 로그인이 되면 렌딩페이지로 이동시키기
 		dispatch(loginUser(body)).then((response) => {
 			if (response.payload.loginSuccess) {
-				props.history.push('/'); // 페이지 이동
+				props.history.push('/'); // 페이지 이동, 사용하려면 withRouter를 써줘야한다 리액트라우터돔
 			} else {
 				alert('로그인할수없습니다');
 			}
@@ -69,4 +70,4 @@ const LoginPage = (props) => {
 	);
 };
 
-export default LoginPage;
+export default withRouter(LoginPage);
