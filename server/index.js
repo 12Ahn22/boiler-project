@@ -16,15 +16,17 @@ app.use(express.json());
 // 쿠키파서 사용하기
 app.use(cookieParser());
 
+// mongoose를 이용해 mongoDB와 연결하기
 mongoose
 	.connect(config.mongoURI, {
+		// 아래 옵션을 사용하지 않으면 오류가 발생할 수 있다.
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		useCreateIndex: true,
 		useFindAndModify: true,
-	}) // Promise를 반환
-	.then(() => console.log('MongoDB connected'))
-	.catch((error) => console.log(error));
+	}) // Promise를 반환한다
+	.then(() => console.log('MongoDB connected')) // 연결이 됬다면
+	.catch((error) => console.log(error)); // 연결이 되지 않았다면
 //
 //
 //
@@ -62,6 +64,12 @@ app.post('/api/users/login', (req, res) => {
 		// DB에 이메일이 있다면 비밀번호가 맞는지 확인하기
 		// UserModel에서 메소드 만들기
 		user.comparePassword(req.body.password, (err, isMatch) => {
+			if (err) {
+				return res.json({
+					loginSuccess: false,
+					meesage: '에러가 발생했습니다',
+				});
+			}
 			// isMatch가 null이면 비밀번호가 틀린 것
 			if (!isMatch) {
 				return res.json({

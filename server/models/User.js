@@ -81,6 +81,7 @@ userSchema.methods.generateToken = function (callback) {
 	// token + 'secretToken' => user._id 토큰과 문자를 통해 user._id값을 얻을 수 있다
 
 	user.token = token;
+	// 토큰값을 저장
 	user.save((err, user) => {
 		// 에러가 있다면 콜백에 err전달
 		if (err) return callback(err);
@@ -92,7 +93,7 @@ userSchema.methods.generateToken = function (callback) {
 // find By Token
 userSchema.statics.findByToken = function (token, callback) {
 	const user = this;
-	// 토큰을 decode한다.
+	// 토큰을 decode한다. = user._id를 알아낸다
 	jwt.verify(token, 'secretToken', function (err, decoded) {
 		// 유저 아이디를 이용해 유저 찾기
 		// 클라이언트의 토큰과 DB의 토큰이 같은지 확인하기
